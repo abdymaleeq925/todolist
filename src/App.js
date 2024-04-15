@@ -9,17 +9,22 @@ function App() {
 
   const {Title, Text} = Typography;
 
-  const [notes, setNotes] = useState([]);
+  const [notes, setNotes] = useState(() => {
+    const savedTask = localStorage.getItem('tasks');
+    return savedTask ? JSON.parse(savedTask) : []
+  });
   const [todo, setTodo] = useState('');
   const [loading, setLoading] = useState(false);
+  
 
-  // useEffect(() => {saveTodo()}, [notes])
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(notes))
+  }, [notes])
 
   const addTodo = () => {
     if (!todo.trim()) return
     setLoading(true);
     setTimeout(() => {
-      saveTodo();
       setLoading(false);
       const newTodo = {
         id: uuidv4(),
@@ -27,9 +32,7 @@ function App() {
       };
       
       setNotes([...notes, newTodo]);
-      
       setTodo('');
-      loadTodo();
     }, 1000)
   };
 
@@ -37,21 +40,14 @@ function App() {
 
   const deleteTodo = (id) => {
     setNotes(notes.filter((el) => el.id !== id))
-    saveTodo();
-    loadTodo();
   }
 
-  function saveTodo() {
-
-    localStorage.setItem('tasks', JSON.stringify(notes))
-  };
-
-  function loadTodo() {
-    const tasks = JSON.parse(localStorage?.getItem('tasks'));
-    console.log(tasks);
-    tasks?.forEach(task => { return task })
+  // function loadTodo() {
+  //   const tasks = JSON.parse(localStorage?.getItem('tasks'));
+  //   console.log(tasks);
+  //   tasks?.forEach(task => { return task })
     
-  }
+  // }
   return (
     <div className="App">
       <Col className='to-do' gap={'middle'} style={{ width: 400 }}>
