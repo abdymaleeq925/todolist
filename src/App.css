@@ -1,3 +1,6 @@
+:root {
+  background-color:#2260cb;
+}
 .App {
   text-align: center;
   display: flex;
@@ -6,18 +9,52 @@
   height: 100vh;
 }
 
+.to-do {
+  width: 900px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 20px;
+  width: 500px;
+}
+
+.list {
+  gap: 5px;
+}
+
+.input {
+  width: 74%;
+}
+
 .btn {
   margin: 15px;
 }
 
+.btns {
+  display: flex;
+  gap: 5px;
+}
+
 .delete-btn {
   padding: 0;
-  border: none;
+  line-height: 0;
 }
 
 img {
   height: 20px;
   width: 20px;
+}
+
+.task {
+  border-style: double;
+  background-color: #c6e1e6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 15px;
+}
+
+.strikethrough {
+  text-decoration: line-through;
 }
 
 @media (prefers-reduced-motion: no-preference) {

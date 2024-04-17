@@ -3,11 +3,11 @@ import deleteIcon from './icons/delete-svgrepo-com.svg'
 
 import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { Col, Input, Button, Flex, Typography } from 'antd';
+import { Col, Input, Button, Flex, Typography, Checkbox } from 'antd';
 
 function App() {
 
-  const {Title, Text} = Typography;
+  const {Title} = Typography;
 
   const [notes, setNotes] = useState(() => {
     const savedTask = localStorage.getItem('tasks');
@@ -15,7 +15,7 @@ function App() {
   });
   const [todo, setTodo] = useState('');
   const [loading, setLoading] = useState(false);
-  
+  const [checked, setChecked] = useState(false);
 
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(notes))
@@ -36,28 +36,27 @@ function App() {
     }, 1000)
   };
 
-  console.log(notes)
-
   const deleteTodo = (id) => {
     setNotes(notes.filter((el) => el.id !== id))
   }
 
-  // function loadTodo() {
-  //   const tasks = JSON.parse(localStorage?.getItem('tasks'));
-  //   console.log(tasks);
-  //   tasks?.forEach(task => { return task })
-    
-  // }
+
   return (
     <div className="App">
-      <Col className='to-do' gap={'middle'} style={{ width: 400 }}>
+      <Col className='to-do' gap={'middle'}>
         <Title> To Do List </Title>
-        <Input onChange={(e) => { setTodo(e.target.value) }} value={todo} type='text' placeholder='Type what to do'/>
+        <Input className='input' onChange={(e) => { setTodo(e.target.value) }} value={todo} type='text' placeholder='Type what to do'/>
         <Button className='btn' onClick={addTodo} type='primary' loading={loading}>Add task</Button>
 
-        <Flex vertical>
+        <Flex className='list' vertical>
         {notes?.map((task) => (
-          <div key={task.id}>{task.text} <Button className='delete-btn' onClick={() => deleteTodo(task.id)}><img src={deleteIcon}/></Button> </div>
+          <div className='task'>
+            <div className={!checked ? '' : 'strikethrough'} key={task.id} >{task.text}</div>
+            <div className='btns'>
+              <Checkbox onChange={() => setChecked(!checked)}></Checkbox> 
+              <Button className='delete-btn' onClick={() => deleteTodo(task.id)}><img src={deleteIcon}/></Button>
+            </div>   
+          </div>
         ))}
       </Flex>
       </Col>
