@@ -53,6 +53,11 @@ img {
   padding: 5px 15px;
 }
 
+.deleting {
+  transition: background-color .3s ease;
+  background-color: #2260cb;
+}
+
 .strikethrough {
   text-decoration: line-through;
 }

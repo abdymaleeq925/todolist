@@ -15,7 +15,6 @@ function App() {
   });
   const [todo, setTodo] = useState('');
   const [loading, setLoading] = useState(false);
-  const [checked, setChecked] = useState(false);
 
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(notes))
@@ -28,7 +27,9 @@ function App() {
       setLoading(false);
       const newTodo = {
         id: uuidv4(),
-        text: todo
+        text: todo,
+        check: false,
+        isDeleting: false
       };
       
       setNotes([...notes, newTodo]);
@@ -37,9 +38,27 @@ function App() {
   };
 
   const deleteTodo = (id) => {
-    setNotes(notes.filter((el) => el.id !== id))
+    setNotes(notes.map(nt => {
+      if (nt.id === id) {
+        return {...nt, isDeleting: !nt.isDeleting}
+      }
+      return nt;
+    }))
+    setTimeout(() => {
+      setNotes(notes.filter((el) => el.id !== id))
+    }, 200)
+    
+    
   }
 
+  const toggledChecked = (id) => {
+    setNotes(notes.map(nt => {
+      if (nt.id === id) {
+        return {...nt, check: !nt.check}
+      }
+      return nt;
+    }))
+  }
 
   return (
     <div className="App">
@@ -50,10 +69,10 @@ function App() {
 
         <Flex className='list' vertical>
         {notes?.map((task) => (
-          <div className='task'>
-            <div className={!checked ? '' : 'strikethrough'} key={task.id} >{task.text}</div>
+          <div className={task.isDeleting ? 'task deleting' : 'task'} key={task.id} id={task.id}>
+            <div className={!task.check ? '' : 'strikethrough'} key={task.id} >{task.text}</div>
             <div className='btns'>
-              <Checkbox onChange={() => setChecked(!checked)}></Checkbox> 
+              <Checkbox onChange={() => toggledChecked(task.id)}></Checkbox> 
               <Button className='delete-btn' onClick={() => deleteTodo(task.id)}><img src={deleteIcon}/></Button>
             </div>   
           </div>
