@@ -17,8 +17,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "preinstall": "npm install --legacy-peer-deps",
     "start": "react-scripts start",
-    "build": "npm install --legacy-peer-deps && react-scripts build",
+    "build": "react-scripts build",
     "test": "jest",
     "test:watch": "jest --watch",
     "eject": "react-scripts eject"
